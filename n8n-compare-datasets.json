@@ -1,0 +1,221 @@
+{
+    "name": "My workflow",
+    "nodes": [
+      {
+        "parameters": {},
+        "id": "60ebc308-e4c5-46e6-a3a9-1f31962478ae",
+        "name": "When clicking \"Test workflow\"",
+        "type": "n8n-nodes-base.manualTrigger",
+        "typeVersion": 1,
+        "position": [
+          180,
+          360
+        ]
+      },
+      {
+        "parameters": {
+          "url": "http://xmlcalendar.ru/data/ru/2022/calendar.json",
+          "options": {}
+        },
+        "id": "49e5fae1-52a9-4e73-bd17-691a46af47ed",
+        "name": "calendar.json",
+        "type": "n8n-nodes-base.httpRequest",
+        "typeVersion": 4.2,
+        "position": [
+          480,
+          420
+        ]
+      },
+      {
+        "parameters": {
+          "mergeByFields": {
+            "values": [
+              {
+                "field1": "['Год/Месяц']",
+                "field2": "year"
+              },
+              {
+                "field1": "['Январь']",
+                "field2": "months[0].days"
+              },
+              {
+                "field1": "['Февраль']",
+                "field2": "months[0].month"
+              },
+              {
+                "field1": "['Март']",
+                "field2": "months[2].days"
+              },
+              {
+                "field1": "['Апрель']",
+                "field2": "months[3].days"
+              },
+              {
+                "field1": "['Май']",
+                "field2": "months[4].days"
+              },
+              {
+                "field1": "['Июнь']",
+                "field2": "months[5].days"
+              },
+              {
+                "field1": "['Июль']",
+                "field2": "months[6].days"
+              },
+              {
+                "field1": "['Август']",
+                "field2": "months[7].days"
+              },
+              {
+                "field1": "['Сентябрь']",
+                "field2": "months[8].days"
+              },
+              {
+                "field1": "['Октябрь']",
+                "field2": "months[9].days"
+              },
+              {
+                "field1": "['Ноябрь']",
+                "field2": "months[10].days"
+              },
+              {
+                "field1": "['Декабрь']",
+                "field2": "months[11].days"
+              },
+              {
+                "field1": "['Всего рабочих дней']",
+                "field2": "statistic.workdays"
+              },
+              {
+                "field1": "['Всего праздничных и выходных дней']",
+                "field2": "statistic.holidays"
+              },
+              {
+                "field1": "['Количество рабочих часов при 40-часовой рабочей неделе']",
+                "field2": "statistic.hours40"
+              },
+              {
+                "field1": "['Количество рабочих часов при 36-часовой рабочей неделе']",
+                "field2": "statistic.hours36"
+              },
+              {
+                "field1": "['Количество рабочих часов при 24-часовой рабочей неделе']",
+                "field2": "statistic.hours24"
+              }
+            ]
+          },
+          "options": {}
+        },
+        "id": "f048bad0-fd8c-4db8-9195-876183794af6",
+        "name": "Compare Datasets",
+        "type": "n8n-nodes-base.compareDatasets",
+        "typeVersion": 2.3,
+        "position": [
+          740,
+          180
+        ]
+      },
+      {
+        "parameters": {
+          "url": "http://xmlcalendar.ru/data/ru/2022/calendar.csv",
+          "options": {
+            "response": {
+              "response": {
+                "responseFormat": "file"
+              }
+            }
+          }
+        },
+        "id": "577fbcce-cce9-4b55-9e05-a209878f966f",
+        "name": "HTTP Request",
+        "type": "n8n-nodes-base.httpRequest",
+        "typeVersion": 4.2,
+        "position": [
+          320,
+          60
+        ]
+      },
+      {
+        "parameters": {
+          "binaryPropertyName": "=data",
+          "options": {}
+        },
+        "id": "2792360f-6c07-40c0-8eec-82307fc883d2",
+        "name": "Extract from File",
+        "type": "n8n-nodes-base.extractFromFile",
+        "typeVersion": 1,
+        "position": [
+          540,
+          60
+        ]
+      }
+    ],
+    "pinData": {},
+    "connections": {
+      "When clicking \"Test workflow\"": {
+        "main": [
+          [
+            {
+              "node": "calendar.json",
+              "type": "main",
+              "index": 0
+            },
+            {
+              "node": "HTTP Request",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "calendar.json": {
+        "main": [
+          [
+            {
+              "node": "Compare Datasets",
+              "type": "main",
+              "index": 1
+            }
+          ]
+        ]
+      },
+      "HTTP Request": {
+        "main": [
+          [
+            {
+              "node": "Extract from File",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Compare Datasets": {
+        "main": [
+          []
+        ]
+      },
+      "Extract from File": {
+        "main": [
+          [
+            {
+              "node": "Compare Datasets",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      }
+    },
+    "active": false,
+    "settings": {
+      "executionOrder": "v1"
+    },
+    "versionId": "f8dcf7c0-601c-47dd-ad9c-dce70553fbbf",
+    "meta": {
+      "templateCredsSetupCompleted": true,
+      "instanceId": "9c540edd7d59cc53e5409221e86c0b03c9e61cafdb11bf86e42fde9b70963e5e"
+    },
+    "id": "ivF2qO3PJtqrnxcs",
+    "tags": []
+  }
